@@ -20,7 +20,8 @@ class AccountController extends AbstractActionController
 
     public function addAction()
     {
-        return array();
+        
+		return array();
     }
 
     public function registerAction()
