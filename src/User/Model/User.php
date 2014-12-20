@@ -20,4 +20,11 @@ class User extends AbstractTableGateway {
 		$this->featureSet->addFeature(new GlobalAdapterFeature());
 		$this->initialize();
 	}
+	
+	public function insert($set) {
+		unset($set['password_verify']);
+		$set['password'] = md5($set['password']); //better than cleartext passwords
+		
+		return parent::insert($set);
+	}
 }

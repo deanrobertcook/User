@@ -6,6 +6,11 @@ use Zend\Form\Form;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Validator\EmailAddress;
+use Zend\Validator\Identical;
+use Zend\Validator\NotEmpty;
+use Zend\Validator\Regex;
+use ZendTest\XmlRpc\Server\Exception;
 /**
  * Description of UserForm
  *
@@ -19,7 +24,6 @@ class UserForm extends Form {
 		//here we can set attributes for the HTML form element
 		$this->setAttribute('method', 'post');
 		
-		//EMAIL
 		$this->add(array(
 			'name' => 'email',
 			'type' => 'Zend\Form\Element\Email', //must be a valid Zend Element
@@ -33,7 +37,30 @@ class UserForm extends Form {
 			)
 		));
 		
-		//PASSWORD
+		$this->add(array(
+			'name' => 'first_name',
+			'options' => array(
+				'label' => 'First Name:'
+			),
+			'attributes' => array(
+				'type' => 'text',
+				'required' => 'required',
+				'placeholder' => 'First Name'
+			)
+		));
+		
+		$this->add(array(
+			'name' => 'last_name',
+			'options' => array(
+				'label' => 'Last Name:'
+			),
+			'attributes' => array(
+				'type' => 'text',
+				'required' => 'required',
+				'placeholder' => 'Last Name'
+			)
+		));
+		
 		$this->add(array(
 			'name' => 'password',
 			'type' => 'Zend\Form\Element\Password',
@@ -46,7 +73,6 @@ class UserForm extends Form {
 			)
 		));
 		
-		//PASSWORD VERIFY
 		$this->add(array(
 			'name' => 'password_verify',
 			'type' => 'Zend\Form\Element\Password',
@@ -59,38 +85,37 @@ class UserForm extends Form {
 			)
 		));
 		
-		//PHONE
-		$this->add(array(
-			'name' => 'phone',
-			'options' => array(
-				'label' => 'Phone:'
-			),
-			'attributes' => array(
-				'type' => 'tel',
-				'required' => 'required',
-				'pattern' => '^[\d-/]+$'
-			)
-		));
 		
-		//PHOTO
-		$this->add(array(
-			'name' => 'photo',
-			'type' => 'Zend\Form\Element\File',
-			'options' => array(
-				'label' => 'Your Photo:'
-			),
-			'attributes' => array(
-				'required' => 'required',
-				'id' => 'photo'
-			)
-		));
+//		$this->add(array(
+//			'name' => 'phone',
+//			'options' => array(
+//				'label' => 'Phone:'
+//			),
+//			'attributes' => array(
+//				'type' => 'tel',
+//				'required' => 'required',
+//				'pattern' => '^[\d-/]+$'
+//			)
+//		));
+		
+
+//		$this->add(array(
+//			'name' => 'photo',
+//			'type' => 'Zend\Form\Element\File',
+//			'options' => array(
+//				'label' => 'Your Photo:'
+//			),
+//			'attributes' => array(
+//				'required' => 'required',
+//				'id' => 'photo'
+//			)
+//		));
 		
 		$this->add(array(
 			'name' => 'csrf',
 			'type' => 'Zend\Form\Element\Csrf',
 		));
 		
-		//PHONE
 		$this->add(array(
 			'name' => 'submit',
 			'type' => 'Zend\Form\Element\Submit',
@@ -107,7 +132,6 @@ class UserForm extends Form {
 			$inputFilter = new InputFilter();
 			$factory = new InputFactory();
 			
-			//EMAIL
 			$inputFilter->add($factory->createInput(array(
 				//This name tells us the validators and filters will be applied to related input
 				'name' => 'email',
@@ -120,7 +144,7 @@ class UserForm extends Form {
 						'name' => 'EmailAddress',
 						'options' => array(
 							'messages' => array(
-								'emailAddressInvalidFormat' => 'Email address is not valid.',
+								EmailAddress::INVALID_FORMAT => 'Email address is not valid.',
 							),
 						),
 					),
@@ -128,17 +152,16 @@ class UserForm extends Form {
 						'name' => 'NotEmpty',
 						'options' => array(
 							'messages' => array(
-								'isEmpty' => 'Email address is required.'
+								NotEmpty::IS_EMPTY => 'Email address is required.'
 							)
 						),
 					),
 				),
 			)));
 			
-			//NAME
 			$inputFilter->add($factory->createInput(array(
 				//This name tells us the validators and filters will be applied to related input
-				'name' => 'name',
+				'name' => 'first_name',
 				'filters' => array(
 					array('name' => 'StripTags'),
 					array('name' => 'StringTrim'),
@@ -148,7 +171,44 @@ class UserForm extends Form {
 						'name' => 'NotEmpty',
 						'options' => array(
 							'messages' => array(
-								'isEmpty' => 'Name is required.'
+								NotEmpty::IS_EMPTY => 'First name is required.'
+							)
+						),
+					),
+					array(
+						'name' => 'Regex',
+						'options' => array(
+							'pattern' => '/^[a-zA-Z]+$/',
+							'messages' => array(
+								Regex::NOT_MATCH => 'Please enter a valid name.'
+							)
+						),
+					),
+				),
+			)));
+			
+			$inputFilter->add($factory->createInput(array(
+				//This name tells us the validators and filters will be applied to related input
+				'name' => 'last_name',
+				'filters' => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name' => 'NotEmpty',
+						'options' => array(
+							'messages' => array(
+								NotEmpty::IS_EMPTY => 'First name is required.'
+							)
+						),
+					),
+					array(
+						'name' => 'Regex',
+						'options' => array(
+							'pattern' => '/^[a-zA-Z]+$/',
+							'messages' => array(
+								Regex::NOT_MATCH => 'Please enter a valid name.'
 							)
 						),
 					),
@@ -168,7 +228,7 @@ class UserForm extends Form {
 						'name' => 'NotEmpty',
 						'options' => array(
 							'messages' => array(
-								'isEmpty' => 'Password is required.'
+								NotEmpty::IS_EMPTY => 'Password is required.'
 							)
 						),
 					),
@@ -185,70 +245,83 @@ class UserForm extends Form {
 				),
 				'validators' => array(
 					array(
+						'name' => 'NotEmpty',
+						'options' => array(
+							'messages' => array(
+								NotEmpty::IS_EMPTY => 'Please verify the password.'
+							)
+						),
+					),
+					array(
 						//this validator checks to see that the input is the same as the supplied token
-						'name' => 'identical',
+						'name' => 'Identical',
 						'options' => array(
-							'token' => 'password'
+							'token' => 'password',
+							'messages' => array(
+								Identical::NOT_SAME => "Passwords do not match",
+							)
 						),
 					),
 				),
 			)));
 			
-			//PHOTO
-			$inputFilter->add($factory->createInput(array(
-				//This name tells us the validators and filters will be applied to related input
-				'name' => 'photo',
-				'filters' => array(
-					array(
-						'name' => 'filerenameupload',
-						'options' => array(
-							//note, if the folder does not exist, we'll get a strange warning saying the 
-							//field is empty, and validation will fail.
-							'target' => 'data/image/photos',
-							'randomize' => true,
-						),
-					),
-				),
-				'validators' => array(
-					array(
-						'name' => 'filesize',
-						'options' => array(
-							'max' => '2097152' //2MB
-						),
-					),
-					array(
-						'name' => 'filemimetype',
-						'options' => array(
-							'mimeType' => 'image/png, image/x-png, image/jpg, image/jpeg, image/gif'
-						),
-					),
-					array(
-						'name' => 'fileimagesize',
-						'options' => array(
-							'maxWidth' => '200',
-							'maxHeight' => '200',
-						),
-					),
-				),
-			)));
-			
-			//PHONE
-			$inputFilter->add($factory->createInput(array(
-				//This name tells us the validators and filters will be applied to related input
-				'name' => 'phone',
-				'filters' => array(
-					array('name' => 'digits'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name' => 'regex',
-						'options' => array(
-							'pattern' => '/^[\d-\/]+$/'
-						),
-					),
-				),
-			)));
+//			//PHOTO
+//			$inputFilter->add($factory->createInput(array(
+//				//This name tells us the validators and filters will be applied to related input
+//				'name' => 'photo',
+//				'filters' => array(
+//					array(
+//						'name' => 'File\RenameUpload',
+//						'options' => array(
+//							//note, if the folder does not exist, we'll get a strange warning saying the 
+//							//field is empty, and validation will fail.
+//							'target' => 'data/image/photos',
+//							'use_upload_extension' => true,
+//							'randomize' => true,
+//						),
+//					),
+//				),
+//				'validators' => array(
+//					array(
+//						'name' => 'File\Size',
+//						'options' => array(
+//							'max' => '2097152', //2MB
+//							'messages' => array(
+//								Size::TOO_BIG=> 'The photo exceeds the maximum allowed limit of 2MB.'
+//							)
+//						),
+//					),
+//					array(
+//						'name' => 'File\ImageSize',
+//						'options' => array(
+//							'maxWidth' => '500',
+//							'maxHeight' => '500',
+//							'messages' => array(
+//								ImageSize::HEIGHT_TOO_BIG => 'Please make sure the image height is less than 500px',
+//								ImageSize::WIDTH_TOO_BIG => 'Please make sure the image width is less than 500px'
+//							)
+//						),
+//					),
+//				),
+//			)));
+//			
+//			//PHONE
+//			$inputFilter->add($factory->createInput(array(
+//				//This name tells us the validators and filters will be applied to related input
+//				'name' => 'phone',
+//				'filters' => array(
+//					array('name' => 'digits'),
+//					array('name' => 'StringTrim'),
+//				),
+//				'validators' => array(
+//					array(
+//						'name' => 'regex',
+//						'options' => array(
+//							'pattern' => '/^[\d-\/]+$/'
+//						),
+//					),
+//				),
+//			)));
 			
 			$this->filter = $inputFilter;
 		}
