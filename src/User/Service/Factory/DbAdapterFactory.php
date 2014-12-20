@@ -1,11 +1,11 @@
 <?php
-namespace User\Service;
+namespace User\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Db\Adapter\Adapter;
 
-class Database implements FactoryInterface
+class DbAdapterFactory implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)

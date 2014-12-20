@@ -2,7 +2,7 @@
 return array(
     'service_manager' => array(
 		'factories' => array(
-			'database' => 'User\Service\Factory\Database',
+			'database' => 'User\Service\Factory\DbAdapterFactory',
 		),
 	),
 	'controllers' => array(
