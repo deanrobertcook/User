@@ -2,21 +2,21 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'ZendSkeletonModule\Controller\Skeleton' => 'ZendSkeletonModule\Controller\SkeletonController',
+            'User\Controller\Account' => 'User\Controller\AccountController',
         ),
     ),
     'router' => array(
         'routes' => array(
-            'module-name-here' => array(
+            'user' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     // Change this to something specific to your module
-                    'route'    => '/module-specific-root',
+                    'route'    => '/user',
                     'defaults' => array(
                         // Change this value to reflect the namespace in which
                         // the controllers for your module are found
-                        '__NAMESPACE__' => 'ZendSkeletonModule\Controller',
-                        'controller'    => 'Skeleton',
+                        '__NAMESPACE__' => 'User\Controller',
+                        'controller'    => 'Account',
                         'action'        => 'index',
                     ),
                 ),
@@ -44,7 +44,7 @@ return array(
     ),
     'view_manager' => array(
         'template_path_stack' => array(
-            'ZendSkeletonModule' => __DIR__ . '/../view',
+            'User' => __DIR__ . '/../view',
         ),
     ),
 );
