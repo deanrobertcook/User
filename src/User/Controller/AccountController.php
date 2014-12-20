@@ -6,22 +6,40 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-
 namespace User\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 
 class AccountController extends AbstractActionController
 {
+
     public function indexAction()
     {
         return array();
     }
 
-    public function fooAction()
+    public function addAction()
     {
-        // This shows the :controller and :action parameters in default route
-        // are working when you browse to /module-specific-root/skeleton/foo
+        return array();
+    }
+
+    public function registerAction()
+    {
+        return array();
+    }
+
+    public function viewAction()
+    {
+        return array();
+    }
+
+    public function editAction()
+    {
+        return array();
+    }
+
+    public function deleteAction()
+    {
         return array();
     }
 }
