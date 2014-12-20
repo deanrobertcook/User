@@ -8,6 +8,7 @@
  */
 namespace User\Controller;
 
+use User\Form\UserForm;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class AccountController extends AbstractActionController
@@ -20,8 +21,19 @@ class AccountController extends AbstractActionController
 
     public function addAction()
     {
-        
-		return array();
+        $form = new UserForm();
+		if ($this->getRequest()->isPost()) {
+			$data = array_merge_recursive(
+					$this->getRequest()->getPost()->toArray(),
+					$this->getRequest()->getFiles()->toArray()
+			);
+			
+			$form->setData($data);
+			if ($form->isValid()) {
+				//SAVE THE DATA OF THE USER
+			}
+		}
+		return array('form1' => $form);
     }
 
     public function registerAction()
