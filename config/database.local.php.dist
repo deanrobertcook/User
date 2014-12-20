@@ -1,0 +1,13 @@
+<?php
+return array(
+    'db' => array(
+        'driver' => 'Mysqli',
+        'database' => 'testing_centre',
+        'username' => 'username',
+        'password' => 'password',
+        'hostname' => 'localhost',
+        'options' => array(
+            'buffer_results' => 1,
+        ),
+    ),
+);

@@ -1,6 +1,11 @@
 <?php
 return array(
-    'controllers' => array(
+    'service_manager' => array(
+		'factories' => array(
+			'database' => 'User\Service\Factory\Database',
+		),
+	),
+	'controllers' => array(
         'invokables' => array(
             'User\Controller\Account' => 'User\Controller\AccountController',
         ),
