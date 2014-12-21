@@ -5,6 +5,11 @@ return array(
 			'database' => 'User\Service\Factory\DbAdapterFactory',
 		),
 	),
+	'table-gateway' => array(
+		'map' => array(
+			'users' => 'User\Model\User',
+		),
+	),
 	'controllers' => array(
         'invokables' => array(
             'User\Controller\Account' => 'User\Controller\AccountController',
