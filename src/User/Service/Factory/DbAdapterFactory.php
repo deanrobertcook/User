@@ -15,5 +15,3 @@ class DbAdapterFactory implements FactoryInterface
         return $adapter;
     }
 }
-
-?>

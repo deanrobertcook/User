@@ -1,16 +1,16 @@
 <?php
 return array(
     'service_manager' => array(
-		'factories' => array(
-			'database' => 'User\Service\Factory\DbAdapterFactory',
-		),
-	),
-	'table-gateway' => array(
-		'map' => array(
-			'users' => 'User\Model\User',
-		),
-	),
-	'controllers' => array(
+        'factories' => array(
+            'database' => 'User\Service\Factory\DbAdapterFactory',
+        ),
+    ),
+    'table-gateway' => array(
+        'map' => array(
+            'users' => 'User\Model\User',
+        ),
+    ),
+    'controllers' => array(
         'invokables' => array(
             'User\Controller\Account' => 'User\Controller\AccountController',
         ),

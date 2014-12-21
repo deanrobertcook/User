@@ -16,76 +16,77 @@ use ZendTest\XmlRpc\Server\Exception;
  *
  * @author Dean
  */
-class UserForm extends Form {
-	
-	public function __construct() {
-		parent::__construct();
-		
-		//here we can set attributes for the HTML form element
-		$this->setAttribute('method', 'post');
-		
-		$this->add(array(
-			'name' => 'email',
-			'type' => 'Zend\Form\Element\Email', //must be a valid Zend Element
-			'options' => array(
-				'label' => 'Email:'
-			),
-			'attributes' => array(
-				'type' => 'email',
-				'required' => 'required',
-				'placeholder' => 'Email Address'
-			)
-		));
-		
-		$this->add(array(
-			'name' => 'first_name',
-			'options' => array(
-				'label' => 'First Name:'
-			),
-			'attributes' => array(
-				'type' => 'text',
-				'required' => 'required',
-				'placeholder' => 'First Name'
-			)
-		));
-		
-		$this->add(array(
-			'name' => 'last_name',
-			'options' => array(
-				'label' => 'Last Name:'
-			),
-			'attributes' => array(
-				'type' => 'text',
-				'required' => 'required',
-				'placeholder' => 'Last Name'
-			)
-		));
-		
-		$this->add(array(
-			'name' => 'password',
-			'type' => 'Zend\Form\Element\Password',
-			'options' => array(
-				'label' => 'Password:'
-			),
-			'attributes' => array(
-				'type' => 'password',
-				'required' => 'required',
-			)
-		));
-		
-		$this->add(array(
-			'name' => 'password_verify',
-			'type' => 'Zend\Form\Element\Password',
-			'options' => array(
-				'label' => 'Verify Password:'
-			),
-			'attributes' => array(
-				'type' => 'password',
-				'required' => 'required',
-			)
-		));
-		
-		
+class UserForm extends Form
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+        //here we can set attributes for the HTML form element
+        $this->setAttribute('method', 'post');
+
+        $this->add(array(
+            'name' => 'email',
+            'type' => 'Zend\Form\Element\Email', //must be a valid Zend Element
+            'options' => array(
+                'label' => 'Email:'
+            ),
+            'attributes' => array(
+                'type' => 'email',
+                'required' => 'required',
+                'placeholder' => 'Email Address'
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'first_name',
+            'options' => array(
+                'label' => 'First Name:'
+            ),
+            'attributes' => array(
+                'type' => 'text',
+                'required' => 'required',
+                'placeholder' => 'First Name'
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'last_name',
+            'options' => array(
+                'label' => 'Last Name:'
+            ),
+            'attributes' => array(
+                'type' => 'text',
+                'required' => 'required',
+                'placeholder' => 'Last Name'
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'password',
+            'type' => 'Zend\Form\Element\Password',
+            'options' => array(
+                'label' => 'Password:'
+            ),
+            'attributes' => array(
+                'type' => 'password',
+                'required' => 'required',
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'password_verify',
+            'type' => 'Zend\Form\Element\Password',
+            'options' => array(
+                'label' => 'Verify Password:'
+            ),
+            'attributes' => array(
+                'type' => 'password',
+                'required' => 'required',
+            )
+        ));
+
+
 //		$this->add(array(
 //			'name' => 'phone',
 //			'options' => array(
@@ -97,7 +98,7 @@ class UserForm extends Form {
 //				'pattern' => '^[\d-/]+$'
 //			)
 //		));
-		
+
 
 //		$this->add(array(
 //			'name' => 'photo',
@@ -110,161 +111,162 @@ class UserForm extends Form {
 //				'id' => 'photo'
 //			)
 //		));
-		
-		$this->add(array(
-			'name' => 'csrf',
-			'type' => 'Zend\Form\Element\Csrf',
-		));
-		
-		$this->add(array(
-			'name' => 'submit',
-			'type' => 'Zend\Form\Element\Submit',
-			'attributes' => array(
-				'value' => 'submit',
-				'required' => 'false',
-			)
-		));
-				
-	}
-	
-	public function getInputFilter() {
-		if (!$this->filter) {
-			$inputFilter = new InputFilter();
-			$factory = new InputFactory();
-			
-			$inputFilter->add($factory->createInput(array(
-				//This name tells us the validators and filters will be applied to related input
-				'name' => 'email',
-				'filters' => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name' => 'EmailAddress',
-						'options' => array(
-							'messages' => array(
-								EmailAddress::INVALID_FORMAT => 'Email address is not valid.',
-							),
-						),
-					),
-					array(
-						'name' => 'NotEmpty',
-						'options' => array(
-							'messages' => array(
-								NotEmpty::IS_EMPTY => 'Email address is required.'
-							)
-						),
-					),
-				),
-			)));
-			
-			$inputFilter->add($factory->createInput(array(
-				//This name tells us the validators and filters will be applied to related input
-				'name' => 'first_name',
-				'filters' => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name' => 'NotEmpty',
-						'options' => array(
-							'messages' => array(
-								NotEmpty::IS_EMPTY => 'First name is required.'
-							)
-						),
-					),
-					array(
-						'name' => 'Regex',
-						'options' => array(
-							'pattern' => '/^[a-zA-Z]+$/',
-							'messages' => array(
-								Regex::NOT_MATCH => 'Please enter a valid name.'
-							)
-						),
-					),
-				),
-			)));
-			
-			$inputFilter->add($factory->createInput(array(
-				//This name tells us the validators and filters will be applied to related input
-				'name' => 'last_name',
-				'filters' => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name' => 'NotEmpty',
-						'options' => array(
-							'messages' => array(
-								NotEmpty::IS_EMPTY => 'First name is required.'
-							)
-						),
-					),
-					array(
-						'name' => 'Regex',
-						'options' => array(
-							'pattern' => '/^[a-zA-Z]+$/',
-							'messages' => array(
-								Regex::NOT_MATCH => 'Please enter a valid name.'
-							)
-						),
-					),
-				),
-			)));
-			
-			//PASSWORD
-			$inputFilter->add($factory->createInput(array(
-				//This name tells us the validators and filters will be applied to related input
-				'name' => 'password',
-				'filters' => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name' => 'NotEmpty',
-						'options' => array(
-							'messages' => array(
-								NotEmpty::IS_EMPTY => 'Password is required.'
-							)
-						),
-					),
-				),
-			)));
-			
-			//PASSWORD VERIFY
-			$inputFilter->add($factory->createInput(array(
-				//This name tells us the validators and filters will be applied to related input
-				'name' => 'password_verify',
-				'filters' => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name' => 'NotEmpty',
-						'options' => array(
-							'messages' => array(
-								NotEmpty::IS_EMPTY => 'Please verify the password.'
-							)
-						),
-					),
-					array(
-						//this validator checks to see that the input is the same as the supplied token
-						'name' => 'Identical',
-						'options' => array(
-							'token' => 'password',
-							'messages' => array(
-								Identical::NOT_SAME => "Passwords do not match",
-							)
-						),
-					),
-				),
-			)));
-			
+
+        $this->add(array(
+            'name' => 'csrf',
+            'type' => 'Zend\Form\Element\Csrf',
+        ));
+
+        $this->add(array(
+            'name' => 'submit',
+            'type' => 'Zend\Form\Element\Submit',
+            'attributes' => array(
+                'value' => 'submit',
+                'required' => 'false',
+            )
+        ));
+
+    }
+
+    public function getInputFilter()
+    {
+        if (!$this->filter) {
+            $inputFilter = new InputFilter();
+            $factory = new InputFactory();
+
+            $inputFilter->add($factory->createInput(array(
+                //This name tells us the validators and filters will be applied to related input
+                'name' => 'email',
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'EmailAddress',
+                        'options' => array(
+                            'messages' => array(
+                                EmailAddress::INVALID_FORMAT => 'Email address is not valid.',
+                            ),
+                        ),
+                    ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Email address is required.'
+                            )
+                        ),
+                    ),
+                ),
+            )));
+
+            $inputFilter->add($factory->createInput(array(
+                //This name tells us the validators and filters will be applied to related input
+                'name' => 'first_name',
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'First name is required.'
+                            )
+                        ),
+                    ),
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^[a-zA-Z]+$/',
+                            'messages' => array(
+                                Regex::NOT_MATCH => 'Please enter a valid name.'
+                            )
+                        ),
+                    ),
+                ),
+            )));
+
+            $inputFilter->add($factory->createInput(array(
+                //This name tells us the validators and filters will be applied to related input
+                'name' => 'last_name',
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'First name is required.'
+                            )
+                        ),
+                    ),
+                    array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '/^[a-zA-Z]+$/',
+                            'messages' => array(
+                                Regex::NOT_MATCH => 'Please enter a valid name.'
+                            )
+                        ),
+                    ),
+                ),
+            )));
+
+            //PASSWORD
+            $inputFilter->add($factory->createInput(array(
+                //This name tells us the validators and filters will be applied to related input
+                'name' => 'password',
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Password is required.'
+                            )
+                        ),
+                    ),
+                ),
+            )));
+
+            //PASSWORD VERIFY
+            $inputFilter->add($factory->createInput(array(
+                //This name tells us the validators and filters will be applied to related input
+                'name' => 'password_verify',
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please verify the password.'
+                            )
+                        ),
+                    ),
+                    array(
+                        //this validator checks to see that the input is the same as the supplied token
+                        'name' => 'Identical',
+                        'options' => array(
+                            'token' => 'password',
+                            'messages' => array(
+                                Identical::NOT_SAME => "Passwords do not match",
+                            )
+                        ),
+                    ),
+                ),
+            )));
+
 //			//PHOTO
 //			$inputFilter->add($factory->createInput(array(
 //				//This name tells us the validators and filters will be applied to related input
@@ -273,7 +275,7 @@ class UserForm extends Form {
 //					array(
 //						'name' => 'File\RenameUpload',
 //						'options' => array(
-//							//note, if the folder does not exist, we'll get a strange warning saying the 
+//							//note, if the folder does not exist, we'll get a strange warning saying the
 //							//field is empty, and validation will fail.
 //							'target' => 'data/image/photos',
 //							'use_upload_extension' => true,
@@ -304,7 +306,7 @@ class UserForm extends Form {
 //					),
 //				),
 //			)));
-//			
+//
 //			//PHONE
 //			$inputFilter->add($factory->createInput(array(
 //				//This name tells us the validators and filters will be applied to related input
@@ -322,16 +324,17 @@ class UserForm extends Form {
 //					),
 //				),
 //			)));
-			
-			$this->filter = $inputFilter;
-		}
-		return $this->filter;
-	}
-	
-	/**
-	 * @Overide throws exception to disallow modifying the input filter for the form
-	 */
-	public function setInputFilter(InputFilterInterface $inputFilter) {
-		throw new Exception('Modifying input filter not allowed');
-	}
+
+            $this->filter = $inputFilter;
+        }
+        return $this->filter;
+    }
+
+    /**
+     * @Overide throws exception to disallow modifying the input filter for the form
+     */
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
+        throw new Exception('Modifying input filter not allowed');
+    }
 }
