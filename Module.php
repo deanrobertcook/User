@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonModule for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace User;
 
 use Zend\Db\TableGateway\Feature\GlobalAdapterFeature;
@@ -43,6 +35,22 @@ class Module implements AutoloaderProviderInterface {
 		$serviceManager = $e->getApplication()->getServiceManager();
 		$dbAdapter = $serviceManager->get('database');
 		GlobalAdapterFeature::setStaticAdapter($dbAdapter);
+		
+		$eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'protectPage'), -100);
+	}
+	
+	public function protectPage(MvcEvent $event) {
+		$match = $event->getRouteMatch();
+		
+		if (!$match) {
+			return;
+		}
+		
+		$controller = $match->getParam('controller');
+		$action = $match->getParam('action');
+		
+		$namespace = $match->getParam('__NAMESPACE__');
+		
 	}
 
 }

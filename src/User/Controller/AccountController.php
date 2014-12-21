@@ -50,7 +50,7 @@ class AccountController extends AbstractActionController {
 	}
 
 	public function deleteAction() {
-		$id = $this->params()->fromQuery('id');
+		$id = $this->params()->fromRoute('id');
 		if($id) {
 			$userModel = new User();
 			$userModel->delete(array('id' => $id));
