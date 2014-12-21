@@ -38,7 +38,13 @@ class AccountController extends AbstractActionController {
 	}
 
 	public function registerAction() {
-		return array();
+		//demonstrates forwarding to the addAction
+		$result = $this->forward()->dispatch(
+			'User\Controller\Account', 
+			array('action' => 'add')
+		);
+		
+		return $result;
 	}
 
 	public function viewAction() {
@@ -55,7 +61,13 @@ class AccountController extends AbstractActionController {
 			$userModel = new User();
 			$userModel->delete(array('id' => $id));
 		}
-		return $this->redirect()->toRoute('user');
+		return $this->redirect()->toRoute(
+			'user/default',
+			array(
+				'controller' => 'account',
+				'action' => 'view',
+			)
+		);
 	}
 
 }
