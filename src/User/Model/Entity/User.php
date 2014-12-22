@@ -9,10 +9,12 @@ namespace User\Mode\Entity;
  */
 class User
 {
+
     protected $id;
     protected $firstName;
     protected $lastName;
     protected $email;
+    protected $password;
 
     public function getId()
     {
@@ -34,6 +36,11 @@ class User
         return $this->email;
     }
 
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
     public function setId($id)
     {
         $this->id = $id;
@@ -53,4 +60,20 @@ class User
     {
         $this->email = $email;
     }
+
+    public function setPassword($password)
+    {
+        $this->password = $this->hashPassword($password);
+    }
+
+    public function verifyPassword($password)
+    {
+        return ($this->password == $this->hashPassword($password));
+    }
+
+    public function hashPassword($password)
+    {
+        return md5($password);
+    }
+
 }
