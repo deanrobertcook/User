@@ -7,7 +7,8 @@ use Zend\EventManager\EventManager;
 class LogController extends AbstractActionController
 {
 
-    public function outAction()    {
+    public function outAction()
+    {
         $auth = $this->serviceLocator->get('auth');
         $auth->clearIdentity();
         return $this->redirect()->toRoute('home');

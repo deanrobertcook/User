@@ -11,7 +11,7 @@ use Zend\Db\TableGateway\Feature\GlobalAdapterFeature;
  *
  * @author Dean
  */
-class User extends AbstractTableGateway
+class UserGateway extends AbstractTableGateway
 {
     public function __construct()
     {

@@ -11,7 +11,7 @@
 namespace User\Controller;
 
 use User\Form\UserForm;
-use User\Model\User;
+use User\Model\UserGateway;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class AccountController extends AbstractActionController
@@ -28,7 +28,7 @@ class AccountController extends AbstractActionController
             $data = $this->getRequest()->getPost()->toArray();
             $form->setData($data);
             if ($form->isValid()) {
-                $model = new User();
+                $model = new UserGateway();
                 $id = $model->insert($form->getData());
 
                 //REDIRECT USER TO VIEW USER ACTION
@@ -64,7 +64,7 @@ class AccountController extends AbstractActionController
     {
         $id = $this->params()->fromRoute('id');
         if($id) {
-            $userModel = new User();
+            $userModel = new UserGateway();
             $userModel->delete(array('id' => $id));
         }
         return $this->redirect()->toRoute(
