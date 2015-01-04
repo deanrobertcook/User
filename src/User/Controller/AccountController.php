@@ -64,8 +64,9 @@ class AccountController extends AbstractActionController
             $data = $this->getRequest()->getPost()->toArray();
             $form->setData($data);
             if ($form->isValid()) {
-                $model = new UserGateway();
-                $id = $model->insert($form->getData());
+                $entityManager = $this->serviceLocator->get('entity-manager');
+                $entityManager->persist($entity);
+                $entityManager->flush();
 
                 //REDIRECT USER TO VIEW USER ACTION
             }

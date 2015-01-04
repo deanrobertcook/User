@@ -1,6 +1,6 @@
 <?php
 
-namespace User\Mode\Entity;
+namespace User\Model\Entity;
 
 use Zend\Form\Annotation;
 
@@ -8,6 +8,8 @@ use Zend\Form\Annotation;
  * Description of User
  * @Annotation\Name("users")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ClassMethods")
+ *
+ * @Entity @Table(name = "users")
  * @author dean
  */
 class User
@@ -15,16 +17,18 @@ class User
 
     /**
      * @Annotation\Exclude()
+     *
+     * @Id @GeneratedValue @Column(type = "integer")
      */
     protected $id;
 
     /**
      *@Annotation\Type("Zend\Form\Element\Email")
      *@Annotation\Options({
-     *		"label": "Your Email:"
-     *		"priority": "100"
+     *		"label": "Your Email:",
+     *		"priority": "400"
      * })
-     *@Annotation\Flags({"priority": "100"})
+     *@Annotation\Flags({"priority": "400"})
      *@Annotation\Filter({"name": "StripTags"})
      *@Annotation\Filter({"name": "StringTrim"})
      *@Annotation\Validator({
@@ -38,39 +42,15 @@ class User
      *		"required": true,
      *		"placeholder": "Email Address"
      * })
+     *
+     * @Column(type = "string")
      */
     protected $email;
 
     /**
      *@Annotation\Type("Zend\Form\Element\Text")
      *@Annotation\Options({
-     *		"label": "Your first name:"
-     *		"priority": "200"
-     * })
-     *@Annotation\Flags({"priority": "200"})
-     *@Annotation\Filter({"name": "StripTags"})
-     *@Annotation\Filter({"name": "StringTrim"})
-     *@Annotation\Validator({
-     *		"name": "NotEmpty"
-     * })
-     * *@Annotation\Validator({
-     *		"name": "RegEx",
-     *		"options": {
-     *			"pattern": "/^[a-zA-Z]+$/"
-     *		}
-     * })
-     *@Annotation\Attributes({
-     *		"type": "text",
-     *		"required": true,
-     *		"placeholder": "First Name"
-     * })
-     */
-    protected $firstName;
-
-    /**
-     *@Annotation\Type("Zend\Form\Element\Text")
-     *@Annotation\Options({
-     *		"label": "Your last name:"
+     *		"label": "Your first name:",
      *		"priority": "300"
      * })
      *@Annotation\Flags({"priority": "300"})
@@ -88,18 +68,48 @@ class User
      *@Annotation\Attributes({
      *		"type": "text",
      *		"required": true,
+     *		"placeholder": "First Name"
+     * })
+     *
+     * @Column(name = "first_name", type = "string")
+     */
+    protected $firstName;
+
+    /**
+     *@Annotation\Type("Zend\Form\Element\Text")
+     *@Annotation\Options({
+     *		"label": "Your last name:",
+     *		"priority": "200"
+     * })
+     *@Annotation\Flags({"priority": "200"})
+     *@Annotation\Filter({"name": "StripTags"})
+     *@Annotation\Filter({"name": "StringTrim"})
+     *@Annotation\Validator({
+     *		"name": "NotEmpty"
+     * })
+     * *@Annotation\Validator({
+     *		"name": "RegEx",
+     *		"options": {
+     *			"pattern": "/^[a-zA-Z]+$/"
+     *		}
+     * })
+     *@Annotation\Attributes({
+     *		"type": "text",
+     *		"required": true,
      *		"placeholder": "Last Name"
      * })
+     *
+     * @Column(name = "last_name", type = "string")
      */
     protected $lastName;
 
     /**
      *@Annotation\Type("Zend\Form\Element\Text")
      *@Annotation\Options({
-     *		"label": "Password:"
-     *		"priority": "400"
+     *		"label": "Password:",
+     *		"priority": "100"
      * })
-     *@Annotation\Flags({"priority": "400"})
+     *@Annotation\Flags({"priority": "100"})
      *@Annotation\Filter({"name": "StripTags"})
      *@Annotation\Filter({"name": "StringTrim"})
      *@Annotation\Validator({
@@ -109,6 +119,8 @@ class User
      *		"type": "password",
      *		"required": true,
      * })
+     *
+     * @Column(type = "string")
      */
     protected $password;
 

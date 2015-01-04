@@ -3,6 +3,7 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'database' => 'User\Service\Factory\DbAdapterFactory',
+            'entity-manager' => 'User\Service\Factory\EntityManager',
         ),
         'invokables' => array(
             'user-entity' => 'User\Model\Entity\User'
@@ -10,6 +11,11 @@ return array(
         'shared' => array(
             'user-entity' => false,
         )
+    ),
+    'doctrine' => array(
+        'entity_path' => array(
+            __DIR__ . '/../src/User/Model/Entity',
+        ),
     ),
     'table-gateway' => array(
         'map' => array(
