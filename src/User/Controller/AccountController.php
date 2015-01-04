@@ -13,6 +13,7 @@ namespace User\Controller;
 use User\Form\UserForm;
 use User\Model\UserGateway;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Form\Annotation\AnnotationBuilder;
 
 class AccountController extends AbstractActionController
 {
@@ -23,7 +24,42 @@ class AccountController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new UserForm();
+        $builder = new AnnotationBuilder();
+        $entity = $this->serviceLocator->get('user-entity');
+        $form = $builder->createForm($entity);
+
+        //Since these form elements aren't part of the Entity, the Annotation
+        //builder doesn't know about them, so we have to make them manually
+        $form->add(array(
+            'name' => 'password_verify',
+            'type' => 'Zend\Form\Element\Password',
+            'options' => array(
+                'label' => 'Verify Password:'
+            ),
+            'attributes' => array(
+                'type' => 'password',
+                'required' => 'required',
+            )),
+        array(
+            'priority' => $form->get('password')->getOption('priority'),
+        ));
+
+        $form->add(array(
+            'name' => 'csrf',
+            'type' => 'Zend\Form\Element\Csrf',
+        ));
+        $form->add(array(
+            'name' => 'submit',
+            'type' => 'Zend\Form\Element\Submit',
+            'attributes' => array(
+                'value' => 'submit',
+                'required' => 'false',
+            )
+        ));
+
+        $form->bind($entity);
+
+//        $form = new UserForm();
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost()->toArray();
             $form->setData($data);
