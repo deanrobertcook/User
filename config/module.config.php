@@ -4,6 +4,12 @@ return array(
         'factories' => array(
             'database' => 'User\Service\Factory\DbAdapterFactory',
         ),
+        'invokables' => array(
+            'user-entity' => 'User\Model\Entity\User'
+        ),
+        'shared' => array(
+            'user-entity' => false,
+        )
     ),
     'table-gateway' => array(
         'map' => array(
